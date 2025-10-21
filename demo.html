@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity Card Generator - Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .controls h1 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .drop-zone {
+            border: 3px dashed #ccc;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            background: #fafafa;
+            transition: all 0.3s;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .drop-zone.dragover {
+            border-color: #4CAF50;
+            background: #e8f5e9;
+        }
+
+        .drop-zone:hover {
+            border-color: #999;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .button:hover {
+            background: #45a049;
+        }
+
+        .button.secondary {
+            background: #2196F3;
+        }
+
+        .button.secondary:hover {
+            background: #0b7dda;
+        }
+
+        .card-list {
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            background: #fafafa;
+        }
+
+        .card-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            margin-bottom: 5px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .card-item img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            margin-right: 10px;
+            border-radius: 4px;
+        }
+
+        .card-item-info {
+            flex: 1;
+        }
+
+        .card-item-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .card-item-count {
+            color: #666;
+            font-size: 12px;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                padding: 0;
+                background: white;
+            }
+
+            .controls {
+                display: none;
+            }
+
+            .page-container {
+                page-break-after: always;
+            }
+
+            .page-container:last-child {
+                page-break-after: auto;
+            }
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        /* Page Container */
+        .page-container {
+            width: 210mm;
+            height: 297mm;
+            background: white;
+            margin: 20px auto;
+            padding: 15mm;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        @media print {
+            .page-container {
+                margin: 0;
+                box-shadow: none;
+            }
+        }
+
+        /* Grid Container */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 170px);
+            grid-template-rows: repeat(6, 170px);
+            gap: 10px;
+            width: fit-content;
+        }
+
+        /* Card Styling */
+        .card {
+            width: 170px;
+            height: 170px;
+            background: #444;
+            border-radius: 15px;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-content {
+            background: white;
+            border-radius: 10px;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-image-area {
+            height: 135px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            overflow: hidden;
+        }
+
+        .card-image-area img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .card-text-area {
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            padding: 0 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <h1>Activity Card Generator - Demo</h1>
+        <div class="drop-zone" id="dropZone">
+            <p>Drag and drop images here or click to select</p>
+            <p style="font-size: 12px; color: #666; margin-top: 10px;">
+                Filename format: name_count.png (e.g., koupání_12.png)
+            </p>
+        </div>
+        <input type="file" id="fileInput" class="file-input" accept="image/*" multiple>
+        <button class="button" onclick="document.getElementById('fileInput').click()">
+            Select Images
+        </button>
+        <button class="button secondary" onclick="cardGenerator.generateCards()">
+            Generate Cards
+        </button>
+        <button class="button secondary" onclick="window.print()">
+            Print
+        </button>
+        <button class="button secondary" onclick="cardGenerator.loadDemoData()">
+            Load Demo Images
+        </button>
+        <div class="card-list" id="cardList"></div>
+    </div>
+
+    <div id="pages"></div>
+
+    <script>
+        class ActivityCardGenerator {
+            constructor() {
+                this.cards = [];
+                this.setupDropZone();
+                this.setupFileInput();
+            }
+
+            setupDropZone() {
+                const dropZone = document.getElementById('dropZone');
+                
+                dropZone.addEventListener('click', () => {
+                    document.getElementById('fileInput').click();
+                });
+
+                dropZone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dropZone.classList.add('dragover');
+                });
+
+                dropZone.addEventListener('dragleave', () => {
+                    dropZone.classList.remove('dragover');
+                });
+
+                dropZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    dropZone.classList.remove('dragover');
+                    const files = Array.from(e.dataTransfer.files);
+                    this.handleFiles(files);
+                });
+            }
+
+            setupFileInput() {
+                const fileInput = document.getElementById('fileInput');
+                fileInput.addEventListener('change', (e) => {
+                    const files = Array.from(e.target.files);
+                    this.handleFiles(files);
+                });
+            }
+
+            handleFiles(files) {
+                const imageFiles = files.filter(file => file.type.startsWith('image/'));
+                
+                imageFiles.forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const imagePath = e.target.result;
+                        const { text, count } = this.parseFilename(file.name);
+                        
+                        this.cards.push({
+                            imagePath,
+                            text,
+                            count
+                        });
+                        
+                        this.updateCardList();
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            parseFilename(filename) {
+                // Remove file extension
+                const nameWithoutExt = filename.replace(/\.[^/.]+$/, '');
+                
+                // Try to match pattern: name_count
+                const match = nameWithoutExt.match(/^(.+)_(\d+)$/);
+                
+                if (match) {
+                    const name = match[1];
+                    const count = parseInt(match[2], 10);
+                    // Capitalize first letter and keep rest as is
+                    const text = name.charAt(0).toUpperCase() + name.slice(1);
+                    return { text, count };
+                } else {
+                    // If no count found, default to 1
+                    const text = nameWithoutExt.charAt(0).toUpperCase() + nameWithoutExt.slice(1);
+                    return { text, count: 1 };
+                }
+            }
+
+            async loadDemoData() {
+                const demoImages = [
+                    { path: 'examples/koupání_12.png', text: 'Koupání', count: 12 },
+                    { path: 'examples/běhání_6.png', text: 'Běhání', count: 6 },
+                    { path: 'examples/skákání_8.png', text: 'Skákání', count: 8 },
+                    { path: 'examples/čtení_4.png', text: 'Čtení', count: 4 }
+                ];
+
+                this.cards = [];
+                
+                for (const img of demoImages) {
+                    try {
+                        const response = await fetch(img.path);
+                        const blob = await response.blob();
+                        const reader = new FileReader();
+                        
+                        await new Promise((resolve) => {
+                            reader.onload = (e) => {
+                                this.cards.push({
+                                    imagePath: e.target.result,
+                                    text: img.text,
+                                    count: img.count
+                                });
+                                resolve();
+                            };
+                            reader.readAsDataURL(blob);
+                        });
+                    } catch (error) {
+                        console.error(`Failed to load ${img.path}:`, error);
+                    }
+                }
+                
+                this.updateCardList();
+                alert('Demo images loaded! Click "Generate Cards" to see them.');
+            }
+
+            updateCardList() {
+                const cardList = document.getElementById('cardList');
+                cardList.innerHTML = '';
+                
+                if (this.cards.length === 0) {
+                    cardList.innerHTML = '<p style="color: #999;">No cards added yet</p>';
+                    return;
+                }
+
+                this.cards.forEach((card, index) => {
+                    const cardItem = document.createElement('div');
+                    cardItem.className = 'card-item';
+                    cardItem.innerHTML = `
+                        <img src="${card.imagePath}" alt="${card.text}">
+                        <div class="card-item-info">
+                            <div class="card-item-name">${card.text}</div>
+                            <div class="card-item-count">Count: ${card.count}</div>
+                        </div>
+                    `;
+                    cardList.appendChild(cardItem);
+                });
+            }
+
+            generateCards() {
+                const pagesContainer = document.getElementById('pages');
+                pagesContainer.innerHTML = '';
+
+                // Duplicate cards based on count
+                const allCards = [];
+                this.cards.forEach(card => {
+                    for (let i = 0; i < card.count; i++) {
+                        allCards.push({
+                            imagePath: card.imagePath,
+                            text: card.text
+                        });
+                    }
+                });
+
+                if (allCards.length === 0) {
+                    alert('Please add some images first!');
+                    return;
+                }
+
+                // Create pages (24 cards per page in 4x6 grid)
+                const cardsPerPage = 24;
+                const totalPages = Math.ceil(allCards.length / cardsPerPage);
+
+                for (let pageNum = 0; pageNum < totalPages; pageNum++) {
+                    const pageContainer = document.createElement('div');
+                    pageContainer.className = 'page-container';
+
+                    const grid = document.createElement('div');
+                    grid.className = 'card-grid';
+
+                    const startIdx = pageNum * cardsPerPage;
+                    const endIdx = Math.min(startIdx + cardsPerPage, allCards.length);
+
+                    for (let i = startIdx; i < endIdx; i++) {
+                        const cardData = allCards[i];
+                        const card = this.createCard(cardData);
+                        grid.appendChild(card);
+                    }
+
+                    pageContainer.appendChild(grid);
+                    pagesContainer.appendChild(pageContainer);
+                }
+            }
+
+            createCard(cardData) {
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                card.innerHTML = `
+                    <div class="card-content">
+                        <div class="card-image-area">
+                            <img src="${cardData.imagePath}" alt="${cardData.text}">
+                        </div>
+                        <div class="card-text-area">
+                            ${cardData.text}
+                        </div>
+                    </div>
+                `;
+
+                return card;
+            }
+        }
+
+        // Initialize the card generator
+        const cardGenerator = new ActivityCardGenerator();
+    </script>
+</body>
+</html>
