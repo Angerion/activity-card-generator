@@ -7,8 +7,8 @@ Modern Svelte application for generating printable A4 pages with activity cards 
 - 📤 **Drag-and-drop** or click to select images
 - 🔢 **Auto-count extraction** from filenames (e.g., `koupání_12.png` → "Koupání" printed 12 times)
 - ✏️ **Editable cards** – adjust text and counts inline before generating pages
-- �️ **Removable entries** – drop any uploaded card before generating
-- �📄 **A4 layout** with centered 4×6 grid (24 cards per page)
+- ❌ **Removable entries** – drop any uploaded card before generating
+- 📄 **A4 layout** with centered 4×6 grid (24 cards per page)
 - 🎨 **Consistent styling**: 170×170px cards, 15px radius, #444 border, 5px padding
 - ️ **Print-ready** layout with proper page breaks
 
