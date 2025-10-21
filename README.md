@@ -2,10 +2,19 @@
 
 A web component for generating printable A4 pages with activity cards from images. Cards are automatically duplicated based on count extracted from filenames.
 
+## 🎯 Two Versions Available
+
+### 1. Vanilla HTML/JS Version (`index.html`, `demo.html`)
+Simple, single-file implementation with no dependencies.
+
+### 2. Svelte Version (`svelte-app/`)
+Modern implementation with **editable cards** and better developer experience. See [svelte-app/README.md](svelte-app/README.md) for details.
+
 ## Features
 
 - 📤 **Drag-and-drop** or click to select images
 - 🔢 **Auto-count extraction** from filenames (e.g., `koupání_12.png` → "Koupání" printed 12 times)
+- ✏️ **Editable cards** (Svelte version only) - Edit text and count after upload
 - 📄 **A4 page layout** with centered 4×6 grid (24 cards per page)
 - 🎨 **Styled cards**: 170×170px, 15px radius, #444 background, 5px inner padding
 - 🖼️ **Smart content layout**: 135px image area + 25px text area
