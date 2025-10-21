@@ -1,5 +1,5 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher } from "svelte";
 
   export let card;
   export let index;
@@ -7,26 +7,26 @@
   const dispatch = createEventDispatcher();
 
   function handleTextChange(event) {
-    dispatch('update', {
+    dispatch("update", {
       index,
-      field: 'text',
-      value: event.target.value
+      field: "text",
+      value: event.target.value,
     });
   }
 
   function handleCountChange(event) {
     const value = parseInt(event.target.value, 10);
     if (!isNaN(value) && value > 0) {
-      dispatch('update', {
+      dispatch("update", {
         index,
-        field: 'count',
-        value
+        field: "count",
+        value,
       });
     }
   }
 
   function handleRemove() {
-    dispatch('remove', { index });
+    dispatch("remove", { index });
   }
 </script>
 
@@ -52,7 +52,12 @@
       />
     </div>
   </div>
-  <button class="remove-button" type="button" on:click={handleRemove} aria-label={`Remove ${card.text}`}>
+  <button
+    class="remove-button"
+    type="button"
+    on:click={handleRemove}
+    aria-label={`Remove ${card.text}`}
+  >
     ×
   </button>
 </div>
@@ -96,7 +101,7 @@
 
   .card-item-name-input:focus {
     outline: none;
-    border-color: #4CAF50;
+    border-color: #4caf50;
   }
 
   .card-item-count-container {
@@ -121,7 +126,7 @@
 
   .card-item-count-input:focus {
     outline: none;
-    border-color: #4CAF50;
+    border-color: #4caf50;
   }
 
   .remove-button {
@@ -133,7 +138,9 @@
     cursor: pointer;
     padding: 4px 6px;
     border-radius: 4px;
-    transition: background 0.2s, color 0.2s;
+    transition:
+      background 0.2s,
+      color 0.2s;
   }
 
   .remove-button:hover {

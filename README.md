@@ -25,8 +25,10 @@ Open the dev server URL (defaults to <http://localhost:5173>) to interact with t
 
 1. Click **Select Images** or drag and drop files into the page.
 2. Filenames should follow `activity_name_count.png`:
-  - `koupání_12.png` → 12 cards labeled “Koupání”.
-  - `reading.png` → single “Reading” card (count defaults to 1).
+
+- `koupání_12.png` → 12 cards labeled “Koupání”.
+- `reading.png` → single “Reading” card (count defaults to 1).
+
 3. Adjust card text or counts in the list as needed, or remove entries you no longer want.
 4. Click **Generate Cards** to lay out the printable pages.
 5. Click **Print** to invoke the browser print dialog.
