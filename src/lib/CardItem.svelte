@@ -33,19 +33,19 @@
 <div class="card-item">
   <img src={card.imagePath} alt={card.text} />
   <div class="card-item-info">
-    <input 
-      type="text" 
-      class="card-item-name-input" 
+    <input
+      type="text"
+      class="card-item-name-input"
       value={card.text}
       on:input={handleTextChange}
       placeholder="Card name"
     />
     <div class="card-item-count-container">
       <label for="count-{index}">Count:</label>
-      <input 
-        type="number" 
+      <input
+        type="number"
         id="count-{index}"
-        class="card-item-count-input" 
+        class="card-item-count-input"
         value={card.count}
         on:input={handleCountChange}
         min="1"

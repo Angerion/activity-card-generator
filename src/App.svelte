@@ -29,7 +29,7 @@
 
   function handleCardUpdate(event) {
     const { index, field, value } = event.detail;
-    cards = cards.map((card, i) => 
+    cards = cards.map((card, i) =>
       i === index ? { ...card, [field]: value } : card
     );
   }
@@ -42,8 +42,8 @@
 <div class="app">
   <div class="controls">
     <h1>Activity Card Generator</h1>
-    <CardList 
-      bind:cards 
+    <CardList
+      bind:cards
       on:filesSelected={handleFilesSelected}
       on:generateCards={handleGenerateCards}
       on:print={handlePrint}

@@ -10,7 +10,7 @@
   function parseFilename(filename) {
     const nameWithoutExt = filename.replace(/\.[^/.]+$/, '');
     const match = nameWithoutExt.match(/^(.+)_(\d+)$/);
-    
+
     if (match) {
       const name = match[1];
       const count = parseInt(match[2], 10);
@@ -24,14 +24,14 @@
 
   function handleFiles(files) {
     const imageFiles = files.filter(file => file.type.startsWith('image/'));
-    
+
     const promises = imageFiles.map(file => {
       return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = (e) => {
           const imagePath = e.target.result;
           const { text, count } = parseFilename(file.name);
-          
+
           resolve({
             imagePath,
             text,
@@ -57,13 +57,13 @@
     ];
 
     cards = [];
-    
+
     for (const img of demoImages) {
       try {
         const response = await fetch(img.path);
         const blob = await response.blob();
         const reader = new FileReader();
-        
+
         await new Promise((resolve) => {
           reader.onload = (e) => {
             cards = [...cards, {
@@ -79,7 +79,7 @@
         console.error(`Failed to load ${img.path}:`, error);
       }
     }
-    
+
     dispatch('filesSelected', cards);
   }
 
@@ -119,10 +119,10 @@
 
 <DropZone on:drop={handleDrop} on:click={openFileDialog} />
 
-<input 
-  type="file" 
-  accept="image/*" 
-  multiple 
+<input
+  type="file"
+  accept="image/*"
+  multiple
   bind:this={fileInput}
   on:change={handleFileInput}
   style="display: none;"
@@ -148,9 +148,9 @@
     <p style="color: #999;">No cards added yet</p>
   {:else}
     {#each cards as card, index}
-      <CardItem 
-        {card} 
-        {index} 
+      <CardItem
+        {card}
+        {index}
         on:update={handleCardUpdate}
         on:remove={handleCardRemove}
       />
