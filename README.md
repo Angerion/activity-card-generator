@@ -1,90 +1,51 @@
 # Activity Card Generator
 
-A web component for generating printable A4 pages with activity cards from images. Cards are automatically duplicated based on count extracted from filenames.
-
-## 🎯 Two Versions Available
-
-### 1. Vanilla HTML/JS Version (`index.html`, `demo.html`)
-Simple, single-file implementation with no dependencies.
-
-### 2. Svelte Version (`svelte-app/`)
-Modern implementation with **editable cards** and better developer experience. See [svelte-app/README.md](svelte-app/README.md) for details.
+Modern Svelte application for generating printable A4 pages with activity cards from uploaded images. Card counts are automatically inferred from filenames and remain editable before printing.
 
 ## Features
 
 - 📤 **Drag-and-drop** or click to select images
 - 🔢 **Auto-count extraction** from filenames (e.g., `koupání_12.png` → "Koupání" printed 12 times)
-- ✏️ **Editable cards** (Svelte version only) - Edit text and count after upload
-- 📄 **A4 page layout** with centered 4×6 grid (24 cards per page)
-- 🎨 **Styled cards**: 170×170px, 15px radius, #444 background, 5px inner padding
-- 🖼️ **Smart content layout**: 135px image area + 25px text area
-- 🖨️ **Print-ready** with proper page breaks
+- ✏️ **Editable cards** – adjust text and counts inline before generating pages
+- �️ **Removable entries** – drop any uploaded card before generating
+- �📄 **A4 layout** with centered 4×6 grid (24 cards per page)
+- 🎨 **Consistent styling**: 170×170px cards, 15px radius, #444 border, 5px padding
+- ️ **Print-ready** layout with proper page breaks
+
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+Open the dev server URL (defaults to <http://localhost:5173>) to interact with the editor. Use `npm run build` to produce a production-ready bundle, and `npm run preview` to serve the built output locally.
 
 ## Usage
 
-### Basic Usage
-
-1. Open `index.html` in your browser
-2. Drag and drop images or click to select them
-3. Images should follow the naming pattern: `activityname_count.png`
-   - Example: `koupání_12.png` → Card named "Koupání" printed 12 times
-   - Without count: `reading.png` → Card named "Reading" printed 1 time
-4. Click "Generate Cards" to create the printable pages
-5. Click "Print" to print the cards
-
-### Demo
-
-Open `demo.html` for a working demo with sample images. Click "Load Demo Images" to see example cards.
-
-### Filename Format
-
-```
-activityname_count.extension
-```
-
-**Examples:**
-- `koupání_12.png` → "Koupání" × 12 cards
-- `běhání_6.png` → "Běhání" × 6 cards
-- `reading.png` → "Reading" × 1 card (default count)
+1. Click **Select Images** or drag and drop files into the page.
+2. Filenames should follow `activity_name_count.png`:
+  - `koupání_12.png` → 12 cards labeled “Koupání”.
+  - `reading.png` → single “Reading” card (count defaults to 1).
+3. Adjust card text or counts in the list as needed, or remove entries you no longer want.
+4. Click **Generate Cards** to lay out the printable pages.
+5. Click **Print** to invoke the browser print dialog.
+6. Optional: Use **Load Demo** to preload sample assets from `public/examples/`.
 
 ## Card Specifications
 
-- **Page Size**: A4 (210mm × 297mm)
+- **Page Size**: A4 (210×297 mm)
 - **Grid Layout**: 4 columns × 6 rows (24 cards per page)
-- **Grid Gap**: 10px
-- **Card Size**: 170px × 170px
-- **Border Radius**: 15px
-- **Background**: #444
-- **Inner Padding**: 5px
-- **Content Area**: White background
-  - **Image Area**: 135px (top)
-  - **Text Area**: 25px (bottom, centered)
+- **Grid Gap**: 10 px
+- **Card Size**: 170×170 px with 15 px border radius
+- **Inner Padding**: 5 px around the card content
+- **Image Area**: 135 px tall
+- **Text Area**: 25 px tall, centered
 
-## Development
+## Assets & Utilities
 
-The project consists of plain HTML, CSS, and JavaScript with no build step required:
-
-- `index.html` - Main application with drag-and-drop functionality
-- `demo.html` - Demo version with sample images pre-loaded
-- `examples/` - Sample images for testing
-
-### Running Locally
-
-Simply open the HTML files in a web browser. For testing with local images, use a local web server:
-
-```bash
-python3 -m http.server 8080
-```
-
-Then navigate to `http://localhost:8080/`
-
-## Browser Compatibility
-
-Works in all modern browsers with support for:
-- CSS Grid
-- FileReader API
-- Drag and Drop API
-- Print styles (@page)
+- `public/examples/` contains ready-to-use demo images and `create_test_images.py` for generating more samples.
+- `examples/` mirrors the same assets for convenience outside the build pipeline.
 
 ## License
 

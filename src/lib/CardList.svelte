@@ -99,6 +99,12 @@
     handleFiles(event.detail);
   }
 
+  function handleCardRemove(event) {
+    const { index } = event.detail;
+    cards = cards.filter((_, i) => i !== index);
+    dispatch('cardRemove', { index });
+  }
+
   function handleFileInput(event) {
     const files = Array.from(event.target.files);
     handleFiles(files);
@@ -146,6 +152,7 @@
         {card} 
         {index} 
         on:update={handleCardUpdate}
+        on:remove={handleCardRemove}
       />
     {/each}
   {/if}

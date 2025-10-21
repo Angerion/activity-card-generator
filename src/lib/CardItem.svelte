@@ -24,6 +24,10 @@
       });
     }
   }
+
+  function handleRemove() {
+    dispatch('remove', { index });
+  }
 </script>
 
 <div class="card-item">
@@ -48,6 +52,9 @@
       />
     </div>
   </div>
+  <button class="remove-button" type="button" on:click={handleRemove} aria-label={`Remove ${card.text}`}>
+    ×
+  </button>
 </div>
 
 <style>
@@ -59,6 +66,7 @@
     background: white;
     border-radius: 4px;
     border: 1px solid #e0e0e0;
+    gap: 10px;
   }
 
   .card-item img {
@@ -114,5 +122,27 @@
   .card-item-count-input:focus {
     outline: none;
     border-color: #4CAF50;
+  }
+
+  .remove-button {
+    background: transparent;
+    border: none;
+    color: #c62828;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .remove-button:hover {
+    background: #ffecec;
+    color: #b71c1c;
+  }
+
+  .remove-button:focus-visible {
+    outline: 2px solid #c62828;
+    outline-offset: 2px;
   }
 </style>

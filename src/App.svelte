@@ -33,6 +33,10 @@
       i === index ? { ...card, [field]: value } : card
     );
   }
+
+  function handleCardRemove() {
+    generatedCards = [];
+  }
 </script>
 
 <div class="app">
@@ -44,6 +48,7 @@
       on:generateCards={handleGenerateCards}
       on:print={handlePrint}
       on:cardUpdate={handleCardUpdate}
+      on:cardRemove={handleCardRemove}
     />
   </div>
 
